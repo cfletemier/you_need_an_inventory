@@ -1,7 +1,9 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 
+from app.api.inventory_api import HelloWorld
 
 db = SQLAlchemy()
 
@@ -14,5 +16,8 @@ def init_app():
     from app.models.models import db
     db.init_app(app)
     migrate = Migrate(app, db)
+
+    api = Api(app)
+    api.add_resource(HelloWorld, '/')
 
     return app

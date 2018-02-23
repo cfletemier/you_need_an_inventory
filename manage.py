@@ -19,9 +19,3 @@ def initdb():
             db.session.add(item_type_entry)
     db.session.commit()
     click.echo("Databases created")
-
-
-@app.route('/')
-def hello_world():
-    return "hello world!"
-
