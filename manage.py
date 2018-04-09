@@ -7,7 +7,6 @@ app = init_app()
 
 @app.cli.command(with_appcontext=True)
 def initdb():
-    # with app.app_context():
     from app.models.models import db, ItemType
     db.create_all()
     db.session.commit()
