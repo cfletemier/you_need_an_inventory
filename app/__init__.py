@@ -15,10 +15,11 @@ def init_app():
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    from app.api.inventory_api import HelloWorld, ItemTypeHandler, InventoryHandler
+    from app.api.inventory_api import HelloWorld, ItemTypeHandler, InventoryCollectionHandler, InventoryHandler
     api = Api(app)
     api.add_resource(HelloWorld, '/')
     api.add_resource(ItemTypeHandler, '/item-types')
-    api.add_resource(InventoryHandler, '/inventory', '/inventory/<int:inventory_id>')
+    api.add_resource(InventoryHandler, '/inventory/<int:inventory_id>')
+    api.add_resource(InventoryCollectionHandler, '/inventory')
 
     return app

@@ -1,3 +1,5 @@
+import copy
+
 from flask_restful import request, Resource
 from jsonschema import validate, ValidationError
 
@@ -58,6 +60,15 @@ class ItemTypeHandler(Resource):
 
 
 class InventoryHandler(Resource):
+    def get(self, inventory_id):
+        item = Item.query.filter_by(id=inventory_id).first()
+        if not item:
+            return generate_response('Not found', 404)
+
+        return generate_response(render_item(item), 200)
+
+
+class InventoryCollectionHandler(Resource):
     def post(self):
         try:
             payload = validate_payload(request, INVENTORY_CREATE_SCHEMA)
@@ -81,9 +92,9 @@ class InventoryHandler(Resource):
 
         return make_response("Created", 201)
 
-    def get(self, inventory_id):
-        item = Item.query.filter_by(id=inventory_id).first()
-        if not item:
-            return generate_response('Not found', 404)
+    def get(self):
+        query_params = copy.deepcopy(request.args)
 
-        return generate_response(render_item(item), 200)
+        items = Item.query.all()
+
+        return generate_response([render_item(item) for item in items], 200)
